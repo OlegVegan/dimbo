@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://c3e4gi60uc1dt"]
+
+[ext_resource type="Script" path="res://scenes/levels/ally.gd" id="1_oa16n"]
+[ext_resource type="Texture2D" uid="uid://cii4pl7iok7q" path="res://graphics/shadow.png" id="2_drwti"]
+[ext_resource type="Texture2D" uid="uid://b8dyba8gn3myt" path="res://graphics/head.png" id="3_nqdga"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gdpyt"]
+height = 22.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5380d"]
+radius = 138.0
+
+[node name="Ally" type="CharacterBody2D"]
+script = ExtResource("1_oa16n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_gdpyt")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.196078)
+position = Vector2(-3.8147e-06, 16)
+scale = Vector2(0.3, 0.376923)
+texture = ExtResource("2_drwti")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.19209e-07, -2.38419e-07)
+scale = Vector2(0.166701, 0.158861)
+texture = ExtResource("3_nqdga")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_5380d")
+
+[node name="LaserTimer" type="Timer" parent="."]
+
+[connection signal="target_lost" from="." to="." method="_on_target_lost"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="timeout" from="LaserTimer" to="." method="_on_laser_timer_timeout"]

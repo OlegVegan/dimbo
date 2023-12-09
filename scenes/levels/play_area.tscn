@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6aw4sjqoc5y7"]
+
+[ext_resource type="Texture2D" uid="uid://di3i1yknl5kmu" path="res://graphics/map1000.png" id="1_2s4rt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b3lxn"]
+size = Vector2(1000, 1000)
+
+[node name="Area1" type="Area2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_2s4rt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_b3lxn")

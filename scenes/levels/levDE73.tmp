@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://pifn04khdq65"]
+
+[ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_vkw7b"]
+[ext_resource type="PackedScene" uid="uid://dxxdbhrg4e6qq" path="res://scenes/levels/Player.tscn" id="2_u2bc1"]
+[ext_resource type="PackedScene" uid="uid://wrxwbh4ds8yu" path="res://scenes/crate.tscn" id="3_a4lj4"]
+
+[node name="Level" type="Node2D"]
+position = Vector2(304, 230)
+script = ExtResource("1_vkw7b")
+
+[node name="Player" parent="." instance=ExtResource("2_u2bc1")]
+position = Vector2(-58, 60)
+
+[node name="Crate" parent="." instance=ExtResource("3_a4lj4")]
+position = Vector2(20, -76)
+
+[node name="Crate2" parent="." instance=ExtResource("3_a4lj4")]
+position = Vector2(3, 238)
+
+[node name="Crate3" parent="." instance=ExtResource("3_a4lj4")]
+position = Vector2(-211, 61)
+
+[node name="Crate4" parent="." instance=ExtResource("3_a4lj4")]
+position = Vector2(-224, 282)
+
+[node name="Crate5" parent="." instance=ExtResource("3_a4lj4")]
+position = Vector2(-230, -72)

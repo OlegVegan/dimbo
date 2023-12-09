@@ -1,0 +1,207 @@
+[gd_scene load_steps=11 format=3 uid="uid://dxxdbhrg4e6qq"]
+
+[ext_resource type="Script" path="res://scenes/levels/Player.gd" id="1_o8jyu"]
+[ext_resource type="Texture2D" uid="uid://cii4pl7iok7q" path="res://graphics/shadow.png" id="2_2u0lt"]
+[ext_resource type="Script" path="res://scenes/levels/PlayerMelee.gd" id="3_yvk1d"]
+[ext_resource type="Texture2D" uid="uid://cuokq5ap2unf8" path="res://graphics/idle_legs.png" id="5_22cpd"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_75omn"]
+radius = 42.0
+height = 124.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3p28o"]
+radius = 69.7209
+
+[sub_resource type="Animation" id="Animation_hanmd"]
+resource_name = "idle_legs"
+loop_mode = 1
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Legs:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Legs:vframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Legs:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_22cpd")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Legs:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_5yvyu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Legs:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Legs:vframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Legs:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_22cpd")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Legs:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ws835"]
+resource_name = "running_legs"
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Legs:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Legs:vframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Legs:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hmyb3"]
+_data = {
+"RESET": SubResource("Animation_5yvyu"),
+"idle_legs": SubResource("Animation_hanmd"),
+"running_legs": SubResource("Animation_ws835")
+}
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(-23, -23)
+script = ExtResource("1_o8jyu")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.196078)
+position = Vector2(19, 48)
+scale = Vector2(1.39231, 1.33077)
+texture = ExtResource("2_2u0lt")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(24, 13)
+shape = SubResource("CapsuleShape2D_75omn")
+
+[node name="PlayerMelee" type="Area2D" parent="."]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("3_yvk1d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerMelee"]
+position = Vector2(21, 19)
+shape = SubResource("CircleShape2D_3p28o")
+
+[node name="AnimationPlayerLegs" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hmyb3")
+}
+autoplay = "idle_legs"
+
+[node name="Legs" type="Sprite2D" parent="."]
+position = Vector2(23, 7)
+texture = ExtResource("5_22cpd")
+hframes = 4
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="PlayerMelee" to="." method="_on_area_2d_body_entered"]

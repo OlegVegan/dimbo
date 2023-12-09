@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bu57ym68d101g"]
+
+[ext_resource type="Texture2D" uid="uid://d2ap7oi85wt5e" path="res://graphics/coin.png" id="1_cngdo"]
+[ext_resource type="Script" path="res://scenes/levels/coin.gd" id="1_nailf"]
+[ext_resource type="AudioStream" uid="uid://3ergoo3qelgf" path="res://audio/coin.mp3" id="3_g06kq"]
+
+[node name="Coin" type="Node2D"]
+script = ExtResource("1_nailf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-3.8147e-06, 0)
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("1_cngdo")
+
+[node name="Player" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_g06kq")
+volume_db = -19.564

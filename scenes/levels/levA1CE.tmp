@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=3 uid="uid://pifn04khdq65"]
+
+[ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_vkw7b"]
+[ext_resource type="Texture2D" uid="uid://c4m1o1qvy6bvl" path="res://graphics/map1000.png" id="2_3my00"]
+[ext_resource type="PackedScene" uid="uid://dxxdbhrg4e6qq" path="res://scenes/levels/Player.tscn" id="2_u2bc1"]
+[ext_resource type="Texture2D" uid="uid://c40iutya0emdi" path="res://graphics/grass2.jpg" id="5_thjb7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fnqkk"]
+size = Vector2(1000, 1004)
+
+[node name="Level" type="Node2D"]
+position = Vector2(304, 230)
+script = ExtResource("1_vkw7b")
+
+[node name="PlayArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayArea"]
+position = Vector2(278, 404)
+texture = ExtResource("2_3my00")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayArea"]
+position = Vector2(278, 404)
+shape = SubResource("RectangleShape2D_fnqkk")
+
+[node name="Node2D" type="Node2D" parent="."]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+visible = false
+position = Vector2(251.625, -134.625)
+scale = Vector2(0.811538, 0.880769)
+texture = ExtResource("5_thjb7")
+
+[node name="Player" parent="." instance=ExtResource("2_u2bc1")]
+position = Vector2(278, 404)
+
+[node name="Camera2D2" type="Camera2D" parent="Player"]
+zoom = Vector2(2.5, 2.5)
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="Label" type="Label" parent="UI"]
+offset_left = 10.5
+offset_top = 3.0
+offset_right = 202.5
+offset_bottom = 26.0
+text = "Coins: 0"
+
+[node name="Label2" type="Label" parent="UI"]
+offset_left = 11.0
+offset_top = 242.0
+offset_right = 399.0
+offset_bottom = 317.0
+text = "В игре ~150 строк кода
+Потрачено 7 часов
+Вес в сборке - 67 мегов"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="TimerAttackReset" type="Timer" parent="."]
+wait_time = 0.526
+
+[connection signal="attacks" from="Player" to="." method="_on_player_attacks"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="TimerAttackReset" to="." method="_on_timer_attack_reset_timeout"]
