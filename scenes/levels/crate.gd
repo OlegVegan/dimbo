@@ -18,6 +18,11 @@ func _ready():
 		
 func _physics_process(delta):
 	rotation_degrees = 0
+	var player = get_parent().get_parent().get_node("Player")
+	var player_pos = player.position
+	var target_pos = (player_pos - position).normalized()
+	if (position.distance_to(player_pos)) > Globals.maxEnemyDistance:
+		queue_free()
 	
 	
 func _process(delta):
@@ -41,14 +46,13 @@ func die():
 	if randNum > 20:
 		var newCoin = coinScene.instantiate()
 		newCoin.position = position
-		get_parent().get_node("Items").add_child(newCoin)
+		get_parent().get_parent().get_node("Items").add_child(newCoin)
 		addCoin()
 	else:
 		var newPoop = poopScene.instantiate()
 		newPoop.position = position
-		get_parent().get_node("Items").add_child(newPoop)
+		get_parent().get_parent().get_node("Items").add_child(newPoop)
 			
-	Globals.cratesOnScene = Globals.cratesOnScene - 1
 	queue_free() 
 
 

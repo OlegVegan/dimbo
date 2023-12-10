@@ -18,13 +18,6 @@ var currentMap = [Vector2(-1,-1), Vector2(-1,0), Vector2(0,-1),
 # Расстановка сцен по координатам
 
 
-
-var cratesOnScene = 0:
-	get:
-		return cratesOnScene
-	set(val):
-		cratesOnScene = val
-
 var player_max_health = 100
 var player_health = 100:
 	get:

@@ -11,7 +11,7 @@ func _ready():
 	$Timer.start()
 
 
-func _process(delta):
+func _process(_delta):
 	if explosion:
 		$Blast.visible = true
 		position = position

@@ -32,7 +32,7 @@ func _process(delta):
 	$ProgressBar.value = Globals.player_health
 	var dir = Input.get_vector("left", "right", "up", "down")
 	if is_rolling:
-		velocity = dir * speed * 1.4
+		velocity = dir * speed * 1.6
 	else:
 		velocity = dir * speed
 	
@@ -134,7 +134,6 @@ func nade_anim():
 
 
 func _on_force_turn(dir):
-	print("_on_force_turn")
 	print(dir)
 	if dir > 0:
 		turnChar('right')

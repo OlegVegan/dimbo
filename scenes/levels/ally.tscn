@@ -265,6 +265,13 @@ volume_db = -16.475
 [node name="MultiTimer" type="Timer" parent="."]
 wait_time = 3.0
 
+[node name="PatrolTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="PatrolTick" type="Timer" parent="."]
+autostart = true
+
 [connection signal="target_found" from="." to="." method="_on_target_found"]
 [connection signal="target_lost" from="." to="." method="_on_target_lost"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
@@ -272,3 +279,5 @@ wait_time = 3.0
 [connection signal="timeout" from="LaserTimer" to="." method="_on_laser_timer_timeout"]
 [connection signal="finished" from="LaserSound" to="." method="_on_laser_sound_finished"]
 [connection signal="timeout" from="MultiTimer" to="." method="_on_multiplier_timeout"]
+[connection signal="timeout" from="PatrolTimer" to="." method="_on_patrol_timer_timeout"]
+[connection signal="timeout" from="PatrolTick" to="." method="_on_patrol_tick_timeout"]

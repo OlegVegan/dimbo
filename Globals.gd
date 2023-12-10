@@ -6,11 +6,7 @@ signal coin_picked
 signal nade_throw
 signal nade_exp
 
-var cratesOnScene = 0:
-	get:
-		return cratesOnScene
-	set(val):
-		cratesOnScene = val
+var maxEnemyDistance = 800
 
 var player_max_health = 100
 var player_health = 100:

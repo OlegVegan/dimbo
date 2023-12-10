@@ -8,7 +8,6 @@ var target = null
 @onready var coinScene = preload("res://scenes/levels/coin.tscn")
 @onready var poopScene = preload("res://scenes/levels/poop.tscn")
 @onready var box_die_sound = $Die
-@onready var playerScene = $Player
 @onready var tookDmg = $took_dmg
 
 signal dmg_cooldown
@@ -31,10 +30,12 @@ func _ready():
 		
 func _physics_process(delta):
 	rotation_degrees = 0
-	var player = get_parent().get_node("Player")
+	var player = get_parent().get_parent().get_node("Player")
 	var player_pos = player.position
 	var target_pos = (player_pos - position).normalized()
-	if (position.distance_to(player_pos)) > 80:
+	if (position.distance_to(player_pos)) > Globals.maxEnemyDistance:
+		queue_free()
+	elif (position.distance_to(player_pos)) > 60:
 		var dir = (target_pos).normalized()
 		velocity = (dir * speed)
 		move_and_slide()
@@ -46,7 +47,6 @@ func _process(delta):
 	else:
 		$ProgressBar.visible = true
 	$ProgressBar.value = hit_points	
-	#under_attack = $playerScene.PlayerMelee.is_attacking
 	if hit_points <= 0:
 		die()	
 	
@@ -58,14 +58,13 @@ func die():
 	if randNum > 20:
 		var newCoin = coinScene.instantiate()
 		newCoin.position = position
-		get_parent().get_node("Items").add_child(newCoin)
+		get_parent().get_parent().get_node("Items").add_child(newCoin)
 		addCoin()
 	else:
 		var newPoop = poopScene.instantiate()
 		newPoop.position = position
-		get_parent().get_node("Items").add_child(newPoop)
+		get_parent().get_parent().get_node("Items").add_child(newPoop)
 			
-	Globals.cratesOnScene = Globals.cratesOnScene - 1
 	queue_free() 
 
 

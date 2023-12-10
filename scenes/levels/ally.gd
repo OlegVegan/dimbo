@@ -17,9 +17,11 @@ var dmg = 2
 var dmg_multiplier = 1
 var dmg_multiplier_max = 4
 var timer_m = false
-
-
+var onPatrol = false
+var patrolDir = false
+var rand_p = Vector2(randf_range(-1, 1), randf_range(-1, 1))
 func _ready():
+	print(player)
 	$ProgressBar.max_value = Globals.ally_max_health
 	$ProgressBar.value = Globals.ally_max_health
 
@@ -69,6 +71,7 @@ func _draw():
 		#print("НАДО РИСОВАТЬ")
 		draw_line(Vector2.ZERO, laser_targets[0].global_position - self.global_position, Color.RED, 3 * dmg_multiplier)
 
+var partolTinerOn = false
 func _physics_process(delta):
 	if !prevVel:
 		prevVel = velocity
@@ -78,13 +81,36 @@ func _physics_process(delta):
 		else:
 			prevVel = velocity
 			notMoving = false
-			
+		
+	
 	var player_pos = player.position
-	target_pos = (player_pos - position).normalized()
-	if (position.distance_to(player_pos)) > 100:
-		var dir = (target_pos).normalized()
-		velocity = (dir * speed)
+	if (position.distance_to(player_pos)) > 300:
+		$PatrolTimer.stop()
+		partolTinerOn = false
+		onPatrol = false
+		
+	if onPatrol:
+		
+		var dir = (rand_p).normalized()
+		if patrolDir:
+			dir = (rand_p).normalized()
+		velocity = (dir * speed/4)
 		move_and_slide()
+	else:
+		target_pos = (player_pos - position).normalized()
+		if (position.distance_to(player_pos)) > 100:
+			var dir = (target_pos).normalized()
+			velocity = (dir * speed)
+			move_and_slide()
+			
+	if !laser_targets.size() and !partolTinerOn:
+		$PatrolTimer.start()
+		$PatrolTick.start()
+		partolTinerOn = true
+	elif laser_targets.size():
+		$PatrolTimer.stop()
+		partolTinerOn = false
+		onPatrol = false
 
 
 func _on_area_2d_area_entered(area):
@@ -114,10 +140,13 @@ func _on_laser_timer_timeout():
 	
 func set_animation():
 	#print(get_real_velocity())
-	if notMoving:
-		ap_legs.play("idle")
-	else:
+	if onPatrol:
 		ap_legs.play("run")
+	else:
+		if notMoving:
+			ap_legs.play("idle")
+		else:
+			ap_legs.play("run")
 		
 	if laser_targets.size():
 		$Sprite2D.visible = false
@@ -142,3 +171,12 @@ func _on_multiplier_timeout():
 		return
 	else:
 		dmg_multiplier += 1
+
+
+func _on_patrol_timer_timeout():
+	onPatrol = true
+
+
+func _on_patrol_tick_timeout():
+	rand_p = Vector2(randf_range(-1, 1), randf_range(-1, 1))
+	patrolDir = !patrolDir
