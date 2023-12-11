@@ -12,9 +12,9 @@ func _on_area_2d_body_entered(body):
 	if name == "Player":
 		steppedOn = true
 		ap.play("die")
-		Globals.player_health = Globals.player_health - 10
-		sfx.pitch_scale = 1
-		sfx.play()
+		$"..".get_parent().get_node("Player").hit(10)
+		#sfx.pitch_scale = 1
+		#sfx.play()
 		iSteppedInPoop.emit()
 	elif name == "Ally":
 		steppedOn = true

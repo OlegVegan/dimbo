@@ -39,8 +39,10 @@ func _process(_delta):
 	if laser_targets.size():	
 		speed = 100	
 		laser()
-		var a_to_b = (laser_targets[0].global_position - self.global_position)
+		var a_to_b = (laser_targets[0].global_position - global_position)
 		#$Sprite2D_shoot.rotation = a_to_b.angle()
+		$LaserLine.set_point_position(1, Vector2(0,0))
+		$LaserLine.set_point_position(0, laser_targets[0].global_position - global_position)
 		
 		if a_to_b.x > 0:		
 			$Sprite2D_shoot.flip_h = false
@@ -70,7 +72,11 @@ func _process(_delta):
 func _draw():	
 	if laser_targets.size():		
 		#print("НАДО РИСОВАТЬ")
-		draw_line(Vector2.ZERO, laser_targets[0].global_position - self.global_position, Color.RED, 3 * dmg_multiplier)
+		draw_line(Vector2.ZERO, laser_targets[0].global_position - global_position, Color.RED, 3 * dmg_multiplier)
+		$LaserLine.width = 3 * dmg_multiplier
+		$LaserLine.visible = true
+	else:		
+		$LaserLine.visible = false
 
 var partolTinerOn = false
 func _physics_process(delta):
@@ -85,6 +91,8 @@ func _physics_process(delta):
 		
 	
 	var player_pos = player.position
+	if (position.distance_to(player_pos)) > 2000:
+		global_position = player_pos + Vector2(0,600)
 	if (position.distance_to(player_pos)) > 300:
 		$PatrolTimer.stop()
 		partolTinerOn = false

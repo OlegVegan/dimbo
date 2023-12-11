@@ -179,6 +179,10 @@ position = Vector2(-294, -163)
 stream = ExtResource("11_7rtqw")
 attenuation = 0.0525563
 
+[node name="LinkT" type="Timer" parent="SoundMixer"]
+wait_time = 2.0
+autostart = true
+
 [node name="MapCheckTimer" type="Timer" parent="."]
 autostart = true
 
@@ -194,4 +198,5 @@ position = Vector2(-227, 77)
 [connection signal="finished" from="SoundMixer/box_sound" to="SoundMixer" method="_on_box_sound_finished"]
 [connection signal="finished" from="SoundMixer/coin_sound" to="SoundMixer" method="_on_coin_sound_finished"]
 [connection signal="finished" from="SoundMixer/expl" to="SoundMixer" method="_on_coin_sound_finished"]
+[connection signal="timeout" from="SoundMixer/LinkT" to="SoundMixer" method="_on_link_t_timeout"]
 [connection signal="timeout" from="MapCheckTimer" to="." method="_on_map_check_timer_timeout"]

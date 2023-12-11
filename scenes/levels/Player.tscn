@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dxxdbhrg4e6qq"]
+[gd_scene load_steps=49 format=3 uid="uid://dxxdbhrg4e6qq"]
 
 [ext_resource type="Script" path="res://scenes/levels/Player.gd" id="1_o8jyu"]
 [ext_resource type="Texture2D" uid="uid://cii4pl7iok7q" path="res://graphics/shadow.png" id="2_2u0lt"]
@@ -18,6 +18,10 @@
 [ext_resource type="Texture2D" uid="uid://e8w02f0ox455" path="res://graphics/roll.png" id="14_1jfaw"]
 [ext_resource type="AudioStream" uid="uid://btsrpqy0cvj1l" path="res://audio/pistol_shot.mp3" id="14_3vdur"]
 [ext_resource type="AudioStream" uid="uid://cq0rjrd5mp2te" path="res://audio/pistol_reload.mp3" id="15_u162i"]
+[ext_resource type="AudioStream" uid="uid://bmxx8iur1i3fi" path="res://audio/d_catch2.mp3" id="19_5ysqv"]
+[ext_resource type="AudioStream" uid="uid://5o4vnxvru0cv" path="res://audio/d_catch.mp3" id="20_vpo2s"]
+[ext_resource type="AudioStream" uid="uid://d03swflh4hah7" path="res://audio/d_pain.mp3" id="21_7g0fp"]
+[ext_resource type="AudioStream" uid="uid://djvgbpr2bgm4m" path="res://audio/d_pain2.mp3" id="22_yhvgn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_75omn"]
 radius = 15.0
@@ -992,6 +996,18 @@ _data = {
 "roll2": SubResource("Animation_2xgek")
 }
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a3hl0"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 5.86
+angle_max = 189.5
+spread = 72.342
+gravity = Vector3(0, 50, 0)
+scale_max = 13.66
+color = Color(0, 0.403922, 0.666667, 1)
+hue_variation_max = 0.53
+turbulence_enabled = true
+
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(-23, -23)
 collision_mask = 6
@@ -1118,6 +1134,25 @@ visible = false
 points = PackedVector2Array(0, 0, 640, 0)
 width = 1.0
 default_color = Color(1, 1, 1, 0.372549)
+
+[node name="Pnade2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("19_5ysqv")
+
+[node name="Pnade" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("20_vpo2s")
+
+[node name="Phurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("21_7g0fp")
+
+[node name="Phurt2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("22_yhvgn")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+amount = 13
+process_material = SubResource("ParticleProcessMaterial_a3hl0")
+explosiveness = 0.17
+randomness = 0.16
 
 [connection signal="forceTurn" from="." to="." method="_on_force_turn"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

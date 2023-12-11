@@ -109,8 +109,8 @@ func mapVisibilityUpdate():
 	var areaSize = GlobalsMap.areaSize
 	var cur_a = GlobalsMap.currentArea
 	
-	#print('___________currentArea')
-	#print(cur_a)
+	print('___________currentArea')
+	print(cur_a)
 	#print('currentMap')
 	#print(currentMap)
 	

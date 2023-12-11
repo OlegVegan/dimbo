@@ -54,7 +54,7 @@ func _process(delta):
 		$Trace.position = Vector2(23,23)
 		$Trace.rotation_degrees = rad_to_deg(ang) + 180
 	
-	if !bullets:
+	if !bullets: 
 		pistol_reload()
 
 	if Input.is_action_pressed("roll"):
@@ -187,6 +187,12 @@ func attack_anim():
 	Globals.player_is_attacking.emit()
 	
 func nade_anim():
+	var rnn = randi_range(0, 4)
+	if rnn == 1:
+		$Pnade.play()
+	if rnn == 2:
+		$Pnade2.play()
+	
 	is_throwing_nade = true
 	ap_head.play("attack")
 	$NadeCooldown.start()	
@@ -208,7 +214,8 @@ func roll_anim():
 	$Torso.visible = false
 	$Legs.visible = false
 	$FullBody.visible = true	
-	ap_full.play("roll")	
+	ap_full.play("roll")
+	$CollisionShape2D.disabled = true
 
 
 func _on_animation_full_body_animation_finished(anim_name):
@@ -217,9 +224,15 @@ func _on_animation_full_body_animation_finished(anim_name):
 	$Legs.visible = true
 	$FullBody.visible = false
 	is_rolling = false
+	$CollisionShape2D.disabled = false
 	
 func hit(dmg):
 	Globals.player_health = Globals.player_health - dmg
+	var rnn = randi_range(0, 7)
+	if rnn == 1:
+		$Phurt.play()
+	if rnn == 2:
+		$Phurt2.play()
 
 func shoot_pistol():
 	if is_reloading:
@@ -261,3 +274,5 @@ func _on_nade_cooldown_timeout():
 	is_throwing_nade = false
 	can_attack2 = true
 	ap_head.play("idle")
+	
+# 

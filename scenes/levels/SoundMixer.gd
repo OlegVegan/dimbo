@@ -11,7 +11,6 @@ func _ready():
 	Globals.coin_picked.connect(_on_coin_picked)
 	Globals.nade_exp.connect(_on_nade_exp)
 	
-	
 func _on_crate_takes_dmg():	
 	if can_play_box_sound:
 		can_play_box_sound = false
@@ -32,7 +31,10 @@ func _on_coin_sound_finished():
 	can_play_coin_sound = true
 	
 func _on_nade_exp():
+	print("nade emitttt")
 	exp_sound.pitch_scale = randf_range(0.9, 1.1)
-	exp_sound.play()
-	
-	
+	exp_sound.play()	
+
+
+func _on_link_t_timeout():
+	position = get_parent().get_node("Player").global_position
