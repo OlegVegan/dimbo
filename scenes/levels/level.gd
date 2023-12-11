@@ -4,8 +4,8 @@ extends Node2D
 @onready var crateScene = preload("res://scenes/levels/crate.tscn")
 @onready var playereScene = preload("res://scenes/levels/Player.tscn")
 @onready var map_picker = preload("res://scenes/levels/map_picker.tscn")
-var initialCratesOnScene = 10
-var maxCratesOnScene = 200
+var initialCratesOnScene = 20
+var maxCratesOnScene = 100
 var player_attacks = false
 var player_coords
 
@@ -33,6 +33,13 @@ func _process(_delta):
 	$UI/PlayerHealth.text = "Health: " + str(Globals.player_health)
 	$UI/Coins.text = str(Globals.coins)
 	$UI/CrateNum.text = "Enemies: " + str($Enemies.get_child_count())
+	if Globals.pistol_mode:
+		$UI/IconPistol.visible = true
+		$UI/IconPistol/Label.text = str($Player.bullets) + "/" + str($Player.magSize)
+		$UI/IconCrawbar.visible = false
+	else:
+		$UI/IconPistol.visible = false
+		$UI/IconCrawbar.visible = true
 	
 	if Input.is_action_just_pressed("zoom"):
 		if $Player/Camera2D.zoom == Vector2(2,2):

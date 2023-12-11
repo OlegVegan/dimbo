@@ -9,28 +9,31 @@ var speed = 400
 @onready var ap_full = $AnimationFullBody
 @onready var sprite_head = $Head
 @onready var swing_sound = $Swing
+@onready var pistol = $Pistol
+@onready var pistol_r = $PistolR
 
 signal forceTurn(dir)
 
 var pos = Vector2.ZERO
 var can_attack = true
+var can_attack2 = true
 var charLooks = 'right'
 var is_throwing_nade = false
 var is_rolling = false
 var pistol_dmg = 22
-var magSize = 6
+var magSize = 12
 var bullets = magSize
 var is_reloading = false
+var is_shooting = false
 
 
 func _ready():	
 	$ProgressBar.max_value = Globals.player_max_health
-	#Globals.test_var.set(88888)
 	turnChar()
 	if Globals.pistol_mode:
-		$Timer.wait_time = 0.1
+		$Timer.wait_time = 0.2
 	else:
-		$Timer.wait_time = 0.5
+		$Timer.wait_time = 0.6
 
 func _process(delta):	
 	if $ProgressBar.value == Globals.player_max_health:
@@ -43,18 +46,29 @@ func _process(delta):
 		velocity = dir * speed * 1.6
 	else:
 		velocity = dir * speed
-	
-	
 		
+	if Globals.pistol_mode:
+		var mp = get_global_mouse_position()
+		var ang = ($PistolRay.global_position - mp).angle()
+		$PistolRay.rotation_degrees = rad_to_deg(ang) + 180
+		$Trace.position = Vector2(23,23)
+		$Trace.rotation_degrees = rad_to_deg(ang) + 180
+	
+	if !bullets:
+		pistol_reload()
+
 	if Input.is_action_pressed("roll"):
 		if !is_rolling:			
 			roll_anim()
 	
-	if Input.is_action_pressed("action") and can_attack:
+	if Input.is_action_pressed("action") and can_attack:		
 		if Globals.pistol_mode:
 			can_attack = false
+			is_shooting = true
 			$Timer.start()
 			shoot_pistol()
+			var where_to_look = int(get_global_mouse_position().x - global_position.x)
+			forceTurn.emit(where_to_look)
 		else:
 			can_attack = false
 			$Timer.start()
@@ -63,22 +77,22 @@ func _process(delta):
 	if Input.is_action_just_pressed("weapon_switch"):
 		Globals.pistol_mode = !Globals.pistol_mode
 		if Globals.pistol_mode:
-			$Timer.wait_time = 0.1
+			$Timer.wait_time = 0.2
 		else:
-			$Timer.wait_time = 0.5
+			$Timer.wait_time = 0.6
 		
-	if Input.is_action_pressed("second_action") and can_attack:
-		can_attack = false		
+	if Input.is_action_pressed("second_action") and can_attack2:
+		can_attack2 = false		
 		var where_to_look = int(get_global_mouse_position().x - global_position.x)
 		forceTurn.emit(where_to_look)
-		$Timer.start()
+		$NadeCooldown.start()
 		Globals.nade_throw.emit()
 		nade_anim()
 	
 		
 	var hor_diraction = Input.get_axis("left", "right")
-	
-	
+
+
 	if int(hor_diraction) < 0:
 		charLooks = 'left'
 	elif int(hor_diraction) > 0:
@@ -91,11 +105,14 @@ func _process(delta):
 	move_and_slide()
 
 func _on_timer_timeout():
-	$PlayerMelee.is_attacking = false
-	is_throwing_nade = false
 	can_attack = true
+	is_shooting = false
+	$PlayerMelee.is_attacking = false
 	ap_head.play("idle")
-	ap_torso.play("idle")
+	if Globals.pistol_mode:		
+		ap_torso.play("pistol")
+	else:
+		ap_torso.play("idle")
 
 #func _on_area_2d_body_entered(body):
 	#print("body entered player")
@@ -138,16 +155,25 @@ func animChar(hor_diraction, vert_diraction):
 		if $PlayerMelee.is_attacking:
 			ap_torso.play("attack")
 		elif is_throwing_nade:
-			ap_torso.play("nade")	
+			ap_torso.play("nade")
+		elif is_shooting and bullets:
+			ap_torso.play("shoot")	
+		elif Globals.pistol_mode:
+			ap_torso.play("pistol")	
 		else:
 			ap_torso.play("idle")
 	else:
 		if $PlayerMelee.is_attacking:
-			ap_torso.play("attack")			
+			ap_torso.play("attack")
+		elif is_shooting:
+			ap_torso.play("pistol")	
 		elif is_throwing_nade:
 			ap_torso.play("nade")	
 		else:
-			ap_torso.play("running")
+			if Globals.pistol_mode:
+				ap_torso.play("run_run")
+			else:
+				ap_torso.play("running")
 		if hor_diraction:
 			ap_legs.play('running_legs')
 		else:
@@ -163,8 +189,7 @@ func attack_anim():
 func nade_anim():
 	is_throwing_nade = true
 	ap_head.play("attack")
-	pass
-	
+	$NadeCooldown.start()	
 
 
 func _on_force_turn(dir):
@@ -175,14 +200,15 @@ func _on_force_turn(dir):
 		turnChar(dir)
 		
 func roll_anim():
+	var t = create_tween()
+	t.tween_property($FullBody, "position:y", 20, 0.1)
+	t.tween_property($FullBody, "position:y", 0, 0.3)
 	is_rolling = true
 	$Head.visible = false
 	$Torso.visible = false
 	$Legs.visible = false
-	$FullBody.visible = true
-	
-	ap_full.play("roll")
-	
+	$FullBody.visible = true	
+	ap_full.play("roll")	
 
 
 func _on_animation_full_body_animation_finished(anim_name):
@@ -199,26 +225,39 @@ func shoot_pistol():
 	if is_reloading:
 		return
 	if !bullets:
-		$Reload.start()		
-		print('reloading')
-		is_reloading = true
+		pistol_reload()		
 		return
 	
-	print('_____bang bang')
-	pass
-	var mp = get_global_mouse_position()
-	var ang = (mp - global_position).angle()
-	$PistolRay.rotation = ang
+	pistol.pitch_scale = randf_range(0.90, 1.05)
+	pistol.play()
+	ap_torso.play("shoot")
+	var t = create_tween()
+	t.tween_property($Trace, "visible", true, 0.02)
+	t.tween_property($Trace, "visible", false, 0.02)
 	if $PistolRay.is_colliding():
 		var par = $PistolRay.get_collider().get_parent()
 		if "hit" in par:
 			par.hit(pistol_dmg)
 	
-	# raycast to mp
-	# hit the first enemy
 	bullets -= 1
+	
+func pistol_reload():
+	if is_reloading:
+		return
+	$Reload.start()
+	is_reloading = true
+	pistol_r.play()
 
 
 func _on_reload_timeout():
 	bullets = magSize
 	is_reloading = false
+	is_shooting = false
+	can_attack = true
+	ap_head.play("idle")
+
+
+func _on_nade_cooldown_timeout():
+	is_throwing_nade = false
+	can_attack2 = true
+	ap_head.play("idle")

@@ -16,7 +16,7 @@ var mapName
 var inst = false
 
 func _ready():
-	$Timer.wait_time = randf_range(0.0, 0.1)
+	$Timer.wait_time = randf_range(0.0, 0.2)
 	if inst:
 		$Timer.wait_time = 0
 	$Timer.start()

@@ -107,6 +107,8 @@ texture = ExtResource("1_7v1qh")
 
 [node name="BOXHITBOX" type="Area2D" parent="."]
 position = Vector2(-0.374926, 0)
+collision_layer = 4
+collision_mask = 11
 script = ExtResource("3_t3mub")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BOXHITBOX"]

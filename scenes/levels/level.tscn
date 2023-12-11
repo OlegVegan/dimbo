@@ -1,14 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://pifn04khdq65"]
+[gd_scene load_steps=13 format=3 uid="uid://pifn04khdq65"]
 
 [ext_resource type="Script" path="res://scenes/levels/level.gd" id="1_vkw7b"]
 [ext_resource type="PackedScene" uid="uid://dxxdbhrg4e6qq" path="res://scenes/levels/Player.tscn" id="2_u2bc1"]
 [ext_resource type="PackedScene" uid="uid://idb7um4yw864" path="res://scenes/levels/health_station.tscn" id="4_2cudw"]
 [ext_resource type="Texture2D" uid="uid://d2ap7oi85wt5e" path="res://graphics/coin.png" id="4_dcpfd"]
 [ext_resource type="AudioStream" uid="uid://nfe1i0lir16c" path="res://audio/box_dies.mp3" id="5_cyrps"]
+[ext_resource type="Texture2D" uid="uid://bk3mi1jbanvcm" path="res://graphics/1200px-Pistol_icon.svg.png" id="5_eobwk"]
+[ext_resource type="Texture2D" uid="uid://kd5b6vebd1bm" path="res://graphics/5771535.png" id="6_g17bc"]
 [ext_resource type="AudioStream" uid="uid://3ergoo3qelgf" path="res://audio/coin.mp3" id="6_lyin6"]
 [ext_resource type="Script" path="res://scenes/levels/MenuButton.gd" id="7_nvnob"]
 [ext_resource type="Script" path="res://scenes/levels/SoundMixer.gd" id="9_xd6mf"]
 [ext_resource type="AudioStream" uid="uid://b2lglsnn6j8kq" path="res://audio/exp.mp3" id="11_7rtqw"]
+[ext_resource type="PackedScene" uid="uid://c3e4gi60uc1dt" path="res://scenes/levels/ally.tscn" id="12_8yru6"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_vkw7b")
@@ -110,8 +113,33 @@ offset_left = 76.0
 offset_right = 116.0
 offset_bottom = 23.0
 
+[node name="IconPistol" type="TextureRect" parent="UI"]
+offset_left = 10.0
+offset_top = 103.0
+offset_right = 58.0
+offset_bottom = 140.0
+texture = ExtResource("5_eobwk")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="UI/IconPistol"]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 6.0
+offset_right = 94.0
+offset_bottom = 29.0
+text = "6/6"
+
+[node name="IconCrawbar" type="TextureRect" parent="UI"]
+visible = false
+offset_left = 10.0
+offset_top = 103.0
+offset_right = 59.0
+offset_bottom = 141.0
+texture = ExtResource("6_g17bc")
+expand_mode = 1
+
 [node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 0.5
 autostart = true
 
 [node name="TimerAttackReset" type="Timer" parent="."]
@@ -152,11 +180,13 @@ stream = ExtResource("11_7rtqw")
 attenuation = 0.0525563
 
 [node name="MapCheckTimer" type="Timer" parent="."]
-wait_time = 2.0
 autostart = true
 
 [node name="Enemies" type="Node2D" parent="."]
 position = Vector2(-24, -9)
+
+[node name="Ally" parent="." instance=ExtResource("12_8yru6")]
+position = Vector2(-227, 77)
 
 [connection signal="pressed" from="UI/MenuButton" to="UI/MenuButton" method="_on_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
