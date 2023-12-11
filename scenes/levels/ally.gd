@@ -20,6 +20,7 @@ var timer_m = false
 var onPatrol = false
 var patrolDir = false
 var rand_p = Vector2(randf_range(-1, 1), randf_range(-1, 1))
+
 func _ready():
 	print(player)
 	$ProgressBar.max_value = Globals.ally_max_health
@@ -178,5 +179,6 @@ func _on_patrol_timer_timeout():
 
 
 func _on_patrol_tick_timeout():
-	rand_p = Vector2(randf_range(-1, 1), randf_range(-1, 1))
+	if randi_range(0, 1) == 1:
+		rand_p = Vector2(randf_range(-1, 1), randf_range(-1, 1))
 	patrolDir = !patrolDir

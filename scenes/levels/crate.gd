@@ -67,6 +67,8 @@ func hit(dmg):
 
 
 func chance_to_become_alive():
+	if hit_points <= 0:
+		return
 	alive = true
 	var newCrate = dummy.instantiate()
 	newCrate.hit_points = hit_points

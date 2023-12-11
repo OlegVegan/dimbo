@@ -12,9 +12,16 @@ extends Node2D
 @onready var m10 = preload("res://maps/map10.tscn")
 
 var selectedMap
+var mapName
+var inst = false
 
 func _ready():
-	$Label.text = str(selectedMap)
+	$Timer.wait_time = randf_range(0.0, 0.1)
+	if inst:
+		$Timer.wait_time = 0
+	$Timer.start()
+
+func _on_timer_timeout():	
 	if selectedMap == 1:
 		var m = m1.instantiate()
 		add_child(m)

@@ -30,3 +30,5 @@ var coins = 0:
 		return coins
 	set(val):
 		coins = val
+
+var pistol_mode = false
